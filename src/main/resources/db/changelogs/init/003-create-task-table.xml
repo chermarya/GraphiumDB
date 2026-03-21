@@ -8,7 +8,7 @@
 
     <changeSet id="003-create-task-table" author="shvets">
         <createTable tableName="task">
-            <column name="tasks_id" type="BIGINT" autoIncrement="true">
+            <column name="task_id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
