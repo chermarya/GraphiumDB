@@ -15,7 +15,7 @@
     <include file="init/003-create-chapter-table.xml" relativeToChangelogFile="true"/>
     <include file="init/004-create-task-table.xml" relativeToChangelogFile="true"/>
     <include file="init/005-create-user-table.xml" relativeToChangelogFile="true"/>
-    <include file="init/006-create-progres-table.xml" relativeToChangelogFile="true"/>
+    <include file="init/006-create-progress-table.xml" relativeToChangelogFile="true"/>
     <include file="init/007-create-projects-table.xml" relativeToChangelogFile="true"/>
 
     <!-- ============================================= -->
