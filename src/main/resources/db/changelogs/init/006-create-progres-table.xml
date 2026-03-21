@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="006-create-progress-table" author="hromov">
+        <createTable tableName="progress">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_progress_user"
+                             referencedTableName="user"
+                             referencedColumnNames="user_id"/>
+            </column>
+            <column name="task_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_progress_task"
+                             referencedTableName="task"
+                             referencedColumnNames="task_id"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="progress"
+                       columnNames="user_id, task_id"
+                       constraintName="pk_progress"/>
+
+        <createIndex tableName="progress" indexName="idx_progress_user_id">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex tableName="progress" indexName="idx_progress_task_id">
+            <column name="task_id"/>
+        </createIndex>
+
+        <sql>
+            INSERT INTO dbo.tables (db_, name, type, author, version, service, description, column_count, created_at, last_update_at)
+            VALUES ('liquibase_lab', 'progress', 'DATA_TABLE', 'Hromov', 1, 'USER_SERVICE',
+                    'Link table tracking user progress on specific tasks',
+                    (SELECT COUNT(*) FROM sys.columns WHERE object_id = OBJECT_ID('progress')),
+                    SYSUTCDATETIME(), NULL);
+        </sql>
+
+        <rollback>
+            <sql>DELETE FROM dbo.tables WHERE name = 'progress';</sql>
+            <dropTable tableName="progress"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
