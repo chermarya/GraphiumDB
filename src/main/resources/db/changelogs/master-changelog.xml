@@ -17,6 +17,9 @@
     <include file="init/005-create-user-table.xml" relativeToChangelogFile="true"/>
     <include file="init/006-create-progress-table.xml" relativeToChangelogFile="true"/>
     <include file="init/007-create-projects-table.xml" relativeToChangelogFile="true"/>
+    <include file="init/008-create-graph-table.xml" relativeToChangelogFile="true"/>
+    <include file="init/009-create-types-table.xml" relativeToChangelogFile="true"/>
+    <include file="init/010-create-graph_type-table.xml" relativeToChangelogFile="true"/>
 
     <!-- ============================================= -->
     <!--  CHANGES: Schema modifications after init     -->

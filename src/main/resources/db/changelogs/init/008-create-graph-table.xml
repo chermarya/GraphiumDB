@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="008-create-graph-table" author="cherevko">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="graph"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="graph">
+            <column name="graph_id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="project_id" type="BIGINT">
+                <constraints nullable="true"
+                             foreignKeyName="fk_graph_projects"
+                             referencedTableName="projects"
+                             referencedColumnNames="project_id"
+                />
+            </column>
+        </createTable>
+
+        <createIndex tableName="graph" indexName="idx_graph_title">
+            <column name="title"/>
+        </createIndex>
+
+        <sql>
+            INSERT INTO dbo.tables (db_, name, type, author, version, service, description, column_count, created_at, last_update_at)
+            VALUES ('liquibase_lab', 'graph', 'DATA_TABLE', 'cherevko', 1, 'graph_service',
+                    'Table for storing info about graph.',
+                    (SELECT COUNT(*) FROM sys.columns WHERE object_id = OBJECT_ID('graph')),
+                    SYSUTCDATETIME(), NULL);
+        </sql>
+
+        <rollback>
+            <dropIndex indexName="idx_graph_title" tableName="graph"/>
+            <dropTable tableName="graph"/>
+            <sql>DELETE FROM dbo.tables WHERE name = 'graph';</sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
