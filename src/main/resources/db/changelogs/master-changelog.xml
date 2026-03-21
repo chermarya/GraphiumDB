@@ -11,6 +11,9 @@
     <!-- ============================================= -->
     <include file="init/tables-init.xml" relativeToChangelogFile="true"/>
 
+    <include file="init/002-create-lesson-table.xml" relativeToChangelogFile="true"/>
+    <include file="init/003-create-chapter-table.xml" relativeToChangelogFile="true"/>
+    <include file="init/004-create-task-table.xml" relativeToChangelogFile="true"/>
 
     <!-- ============================================= -->
     <!--  CHANGES: Schema modifications after init     -->
