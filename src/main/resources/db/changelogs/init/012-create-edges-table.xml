@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="009-create-edges-table" author="khapalsofiia">
+        <createTable tableName="edges">
+            <column name="edge_id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_edges"/>
+            </column>
+
+            <column name="source_node_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_edges_source_node"
+                             referencedTableName="nodes"
+                             referencedColumnNames="node_id"/>
+            </column>
+
+            <column name="target_node_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_edges_target_node"
+                             referencedTableName="nodes"
+                             referencedColumnNames="node_id"/>
+            </column>
+
+            <column name="weight" type="FLOAT"/>
+            <column name="is_directed" type="BOOLEAN"/>
+        </createTable>
+
+        <sql>
+            INSERT INTO dbo.tables (db_, name, type, author, version, service, description, column_count, created_at, last_update_at)
+            VALUES ('liquibase_lab', 'edges', 'DATA_TABLE', 'khapal', 1, 'graph_structure_service',
+                    'Table for storing graph edges.',
+                    (SELECT COUNT(*) FROM sys.columns WHERE object_id = OBJECT_ID('edges')),
+                    SYSUTCDATETIME(), NULL);
+        </sql>
+
+        <rollback>
+            <dropTable tableName="edges"/>
+            <sql>DELETE FROM dbo.tables WHERE name = 'edges';</sql>
+        </rollback>
+
+    </changeSet>
+</databaseChangeLog>
