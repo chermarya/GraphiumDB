@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="001-insert-chapter-data-v001" author="shvets">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists schemaName="dbo" tableName="lesson"/>
+                <tableExists schemaName="dbo" tableName="chapter"/>
+                <columnExists schemaName="dbo" tableName="chapter" columnName="chapter_id"/>
+                <columnExists schemaName="dbo" tableName="chapter" columnName="lesson_id"/>
+                <columnExists schemaName="dbo" tableName="chapter" columnName="number"/>
+                <columnExists schemaName="dbo" tableName="chapter" columnName="title"/>
+                <columnExists schemaName="dbo" tableName="chapter" columnName="text"/>
+            </and>
+        </preConditions>
+
+        <sql>
+            INSERT INTO dbo.chapter (lesson_id, number, title, text)
+            SELECT lesson_id, 1, 'Vertices and Edges', 'Introduction to the basic elements of a graph'
+            FROM dbo.lesson WHERE title = 'Introduction to Graph Theory';
+
+            INSERT INTO dbo.chapter (lesson_id, number, title, text)
+            SELECT lesson_id, 2, 'Simple Graphs', 'Understanding simple graphs and their properties'
+            FROM dbo.lesson WHERE title = 'Introduction to Graph Theory';
+
+            INSERT INTO dbo.chapter (lesson_id, number, title, text)
+            SELECT lesson_id, 3, 'Paths and Walks', 'Definition of paths, trails, and walks'
+            FROM dbo.lesson WHERE title = 'Introduction to Graph Theory';
+
+            INSERT INTO dbo.chapter (lesson_id, number, title, text)
+            SELECT lesson_id, 1, 'Directed Graph Basics', 'Core concepts of directed graphs'
+            FROM dbo.lesson WHERE title = 'Directed and Weighted Graphs';
+
+            INSERT INTO dbo.chapter (lesson_id, number, title, text)
+            SELECT lesson_id, 2, 'Weighted Edges', 'How weights are assigned to edges'
+            FROM dbo.lesson WHERE title = 'Directed and Weighted Graphs';
+
+            INSERT INTO dbo.chapter (lesson_id, number, title, text)
+            SELECT lesson_id, 3, 'Modeling with Weighted Graphs', 'Practical usage of weighted graph models'
+            FROM dbo.lesson WHERE title = 'Directed and Weighted Graphs';
+
+            INSERT INTO dbo.chapter (lesson_id, number, title, text)
+            SELECT lesson_id, 1, 'Depth-First Search', 'DFS traversal and its logic'
+            FROM dbo.lesson WHERE title = 'Graph Traversal Algorithms';
+
+            INSERT INTO dbo.chapter (lesson_id, number, title, text)
+            SELECT lesson_id, 2, 'Breadth-First Search', 'BFS traversal and its logic'
+            FROM dbo.lesson WHERE title = 'Graph Traversal Algorithms';
+
+            INSERT INTO dbo.chapter (lesson_id, number, title, text)
+            SELECT lesson_id, 3, 'Traversal Comparison', 'Comparison of DFS and BFS'
+            FROM dbo.lesson WHERE title = 'Graph Traversal Algorithms';
+
+            INSERT INTO dbo.chapter (lesson_id, number, title, text)
+            SELECT lesson_id, 1, 'Dijkstra Algorithm', 'Single-source shortest path algorithm'
+            FROM dbo.lesson WHERE title = 'Shortest Path Algorithms';
+
+            INSERT INTO dbo.chapter (lesson_id, number, title, text)
+            SELECT lesson_id, 2, 'Bellman-Ford Algorithm', 'Shortest paths with possible negative edges'
+            FROM dbo.lesson WHERE title = 'Shortest Path Algorithms';
+
+            INSERT INTO dbo.chapter (lesson_id, number, title, text)
+            SELECT lesson_id, 3, 'Floyd-Warshall Algorithm', 'All-pairs shortest path algorithm'
+            FROM dbo.lesson WHERE title = 'Shortest Path Algorithms';
+
+            INSERT INTO dbo.chapter (lesson_id, number, title, text)
+            SELECT lesson_id, 1, 'Tree Fundamentals', 'Basic properties of trees'
+            FROM dbo.lesson WHERE title = 'Minimum Spanning Trees';
+
+            INSERT INTO dbo.chapter (lesson_id, number, title, text)
+            SELECT lesson_id, 2, 'Prim Algorithm', 'Greedy construction of minimum spanning tree'
+            FROM dbo.lesson WHERE title = 'Minimum Spanning Trees';
+
+            INSERT INTO dbo.chapter (lesson_id, number, title, text)
+            SELECT lesson_id, 3, 'Kruskal Algorithm', 'Edge-based construction of minimum spanning tree'
+            FROM dbo.lesson WHERE title = 'Minimum Spanning Trees';
+        </sql>
+
+        <rollback>
+            <sql>
+                DELETE FROM dbo.chapter
+                WHERE title IN (
+                'Vertices and Edges',
+                'Simple Graphs',
+                'Paths and Walks',
+                'Directed Graph Basics',
+                'Weighted Edges',
+                'Modeling with Weighted Graphs',
+                'Depth-First Search',
+                'Breadth-First Search',
+                'Traversal Comparison',
+                'Dijkstra Algorithm',
+                'Bellman-Ford Algorithm',
+                'Floyd-Warshall Algorithm',
+                'Tree Fundamentals',
+                'Prim Algorithm',
+                'Kruskal Algorithm'
+                );
+            </sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
