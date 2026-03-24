@@ -21,6 +21,10 @@
     <include file="init/009-create-types-table.xml" relativeToChangelogFile="true"/>
     <include file="init/010-create-graph_type-table.xml" relativeToChangelogFile="true"/>
 
+    <include file="data/lesson-data-V001.xml" relativeToChangelogFile="true"/>
+    <include file="data/chapter-data-V001.xml" relativeToChangelogFile="true"/>
+    <include file="data/task-data-V001.xml" relativeToChangelogFile="true"/>
+
     <!-- ============================================= -->
     <!--  CHANGES: Schema modifications after init     -->
     <!--  ALTER TABLE, ADD COLUMN, RENAME, etc.        -->

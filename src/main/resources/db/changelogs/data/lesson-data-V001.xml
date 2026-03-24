@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="001-insert-lesson-data-v001" author="shvets">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists schemaName="dbo" tableName="lesson"/>
+                <columnExists schemaName="dbo" tableName="lesson" columnName="lesson_id"/>
+                <columnExists schemaName="dbo" tableName="lesson" columnName="title"/>
+                <columnExists schemaName="dbo" tableName="lesson" columnName="description"/>
+            </and>
+        </preConditions>
+
+        <sql>
+            INSERT INTO dbo.lesson (title, description) VALUES
+                ('Introduction to Graph Theory', 'Basic concepts of graphs, vertices, and edges'),
+                ('Directed and Weighted Graphs', 'Study of directed graphs and weighted edges'),
+                ('Graph Traversal Algorithms', 'Overview of DFS and BFS algorithms'),
+                ('Shortest Path Algorithms', 'Methods for finding shortest paths in graphs'),
+                ('Minimum Spanning Trees', 'Concepts and algorithms for MST construction'),
+                ('Connectivity in Graphs', 'Connected components and related properties'),
+                ('Cycles and Acyclic Graphs', 'Cycles, DAGs, and their applications'),
+                ('Graph Representations', 'Adjacency matrix, adjacency list, and incidence matrix'),
+                ('Tree Structures', 'Basic properties and traversal of trees'),
+                ('Bipartite Graphs', 'Definitions, properties, and examples of bipartite graphs'),
+                ('Euler and Hamilton Paths', 'Special paths and cycles in graphs'),
+                ('Network Flow Basics', 'Introduction to flow networks'),
+                ('Graph Coloring', 'Vertex and edge coloring basics'),
+                ('Topological Sorting', 'Ordering vertices in directed acyclic graphs'),
+                ('Applications of Graphs', 'Real-world graph applications in computer science');
+        </sql>
+
+        <rollback>
+            <sql>
+                DELETE FROM dbo.lesson
+                WHERE title IN (
+                'Introduction to Graph Theory',
+                'Directed and Weighted Graphs',
+                'Graph Traversal Algorithms',
+                'Shortest Path Algorithms',
+                'Minimum Spanning Trees',
+                'Connectivity in Graphs',
+                'Cycles and Acyclic Graphs',
+                'Graph Representations',
+                'Tree Structures',
+                'Bipartite Graphs',
+                'Euler and Hamilton Paths',
+                'Network Flow Basics',
+                'Graph Coloring',
+                'Topological Sorting',
+                'Applications of Graphs'
+                );
+            </sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

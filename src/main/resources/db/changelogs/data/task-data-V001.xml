@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="001-insert-task-data-v001" author="shvets">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists schemaName="dbo" tableName="chapter"/>
+                <tableExists schemaName="dbo" tableName="task"/>
+                <columnExists schemaName="dbo" tableName="task" columnName="task_id"/>
+                <columnExists schemaName="dbo" tableName="task" columnName="chapter_id"/>
+                <columnExists schemaName="dbo" tableName="task" columnName="text"/>
+                <columnExists schemaName="dbo" tableName="task" columnName="solution"/>
+            </and>
+        </preConditions>
+
+        <sql>
+            INSERT INTO dbo.task (chapter_id, text, solution)
+            SELECT chapter_id, 'List the main components of a graph.', 'A graph consists of vertices and edges.'
+            FROM dbo.chapter WHERE title = 'Vertices and Edges';
+
+            INSERT INTO dbo.task (chapter_id, text, solution)
+            SELECT chapter_id, 'What is a simple graph?', 'A simple graph has no loops and no multiple edges.'
+            FROM dbo.chapter WHERE title = 'Simple Graphs';
+
+            INSERT INTO dbo.task (chapter_id, text, solution)
+            SELECT chapter_id, 'Explain the difference between a path and a walk.', 'A path has no repeated vertices, while a walk may repeat them.'
+            FROM dbo.chapter WHERE title = 'Paths and Walks';
+
+            INSERT INTO dbo.task (chapter_id, text, solution)
+            SELECT chapter_id, 'What makes a graph directed?', 'Its edges have orientation from one vertex to another.'
+            FROM dbo.chapter WHERE title = 'Directed Graph Basics';
+
+            INSERT INTO dbo.task (chapter_id, text, solution)
+            SELECT chapter_id, 'What can an edge weight represent?', 'It can represent distance, time, cost, or capacity.'
+            FROM dbo.chapter WHERE title = 'Weighted Edges';
+
+            INSERT INTO dbo.task (chapter_id, text, solution)
+            SELECT chapter_id, 'Give one example of a weighted graph application.', 'Road maps with distances between cities.'
+            FROM dbo.chapter WHERE title = 'Modeling with Weighted Graphs';
+
+            INSERT INTO dbo.task (chapter_id, text, solution)
+            SELECT chapter_id, 'What data structure is commonly used in DFS?', 'A stack or recursion.'
+            FROM dbo.chapter WHERE title = 'Depth-First Search';
+
+            INSERT INTO dbo.task (chapter_id, text, solution)
+            SELECT chapter_id, 'What data structure is commonly used in BFS?', 'A queue.'
+            FROM dbo.chapter WHERE title = 'Breadth-First Search';
+
+            INSERT INTO dbo.task (chapter_id, text, solution)
+            SELECT chapter_id, 'Name one key difference between DFS and BFS.', 'DFS goes deep first, BFS explores level by level.'
+            FROM dbo.chapter WHERE title = 'Traversal Comparison';
+
+            INSERT INTO dbo.task (chapter_id, text, solution)
+            SELECT chapter_id, 'When is Dijkstra algorithm applicable?', 'When all edge weights are non-negative.'
+            FROM dbo.chapter WHERE title = 'Dijkstra Algorithm';
+
+            INSERT INTO dbo.task (chapter_id, text, solution)
+            SELECT chapter_id, 'What is the advantage of Bellman-Ford?', 'It can handle negative edge weights.'
+            FROM dbo.chapter WHERE title = 'Bellman-Ford Algorithm';
+
+            INSERT INTO dbo.task (chapter_id, text, solution)
+            SELECT chapter_id, 'What does Floyd-Warshall compute?', 'Shortest paths between all pairs of vertices.'
+            FROM dbo.chapter WHERE title = 'Floyd-Warshall Algorithm';
+
+            INSERT INTO dbo.task (chapter_id, text, solution)
+            SELECT chapter_id, 'What is a tree?', 'A connected acyclic graph.'
+            FROM dbo.chapter WHERE title = 'Tree Fundamentals';
+
+            INSERT INTO dbo.task (chapter_id, text, solution)
+            SELECT chapter_id, 'What strategy does Prim algorithm use?', 'Greedy expansion from a starting vertex.'
+            FROM dbo.chapter WHERE title = 'Prim Algorithm';
+
+            INSERT INTO dbo.task (chapter_id, text, solution)
+            SELECT chapter_id, 'How does Kruskal algorithm build MST?', 'It adds the smallest edges without creating cycles.'
+            FROM dbo.chapter WHERE title = 'Kruskal Algorithm';
+        </sql>
+
+        <rollback>
+            <sql>
+                DELETE FROM dbo.task
+                WHERE text IN (
+                'List the main components of a graph.',
+                'What is a simple graph?',
+                'Explain the difference between a path and a walk.',
+                'What makes a graph directed?',
+                'What can an edge weight represent?',
+                'Give one example of a weighted graph application.',
+                'What data structure is commonly used in DFS?',
+                'What data structure is commonly used in BFS?',
+                'Name one key difference between DFS and BFS.',
+                'When is Dijkstra algorithm applicable?',
+                'What is the advantage of Bellman-Ford?',
+                'What does Floyd-Warshall compute?',
+                'What is a tree?',
+                'What strategy does Prim algorithm use?',
+                'How does Kruskal algorithm build MST?'
+                );
+            </sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
