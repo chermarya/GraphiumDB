@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="001-insert-projects-data-v001" author="Hromov">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists schemaName="dbo" tableName="projects"/>
+                <tableExists schemaName="dbo" tableName="user"/>
+                <columnExists schemaName="dbo" tableName="projects" columnName="title"/>
+                <columnExists schemaName="dbo" tableName="projects" columnName="description"/>
+                <columnExists schemaName="dbo" tableName="projects" columnName="user_id"/>
+            </and>
+        </preConditions>
+
+        <sql>
+            INSERT INTO dbo.projects (title, description, user_id) VALUES
+                ('GraphiumDB Engine', 'Core graph database engine development', 1),
+                ('NURE Student Portal', 'Unified portal for university services', 1),
+                ('CyberGuard Pro', 'Network security monitoring tool', 2),
+                ('AI Path Finder', 'Algorithm for shortest path in dynamic maps', 3),
+                ('SocketGame Engine', 'Real-time multiplayer framework', 4),
+                ('Social Graph API', 'High-performance social relationship service', 5),
+                ('Cloud Storage Manager', 'Distributed file system interface', 6),
+                ('CryptoWallet v2', 'Secure cryptocurrency storage solution', 7),
+                ('Data Vision Tool', 'Analytical dashboard for graph data', 8),
+                ('Mobile Learning App', 'Educational platform for computer science', 9),
+                ('Web Crawler Bot', 'Distributed web indexing service', 10),
+                ('Smart Home Hub', 'IoT device management platform', 11),
+                ('E-Commerce Core', 'Microservices for online retail', 12),
+                ('Traffic Optimizer', 'City-scale traffic flow simulator', 13),
+                ('BioGraph Research', 'Graph modeling for biological networks', 14);
+        </sql>
+
+        <rollback>
+            <sql>
+                DELETE FROM dbo.projects
+                WHERE title IN (
+                'GraphiumDB Engine', 'NURE Student Portal', 'CyberGuard Pro',
+                'AI Path Finder', 'SocketGame Engine', 'Social Graph API',
+                'Cloud Storage Manager', 'CryptoWallet v2', 'Data Vision Tool',
+                'Mobile Learning App', 'Web Crawler Bot', 'Smart Home Hub',
+                'E-Commerce Core', 'Traffic Optimizer', 'BioGraph Research'
+                );
+            </sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
