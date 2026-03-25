@@ -21,9 +21,7 @@
     <include file="init/009-create-types-table.xml" relativeToChangelogFile="true"/>
     <include file="init/010-create-graph_type-table.xml" relativeToChangelogFile="true"/>
 
-    <include file="data/lesson-data-V001.xml" relativeToChangelogFile="true"/>
-    <include file="data/chapter-data-V001.xml" relativeToChangelogFile="true"/>
-    <include file="data/task-data-V001.xml" relativeToChangelogFile="true"/>
+
 
     <!-- ============================================= -->
     <!--  CHANGES: Schema modifications after init     -->
@@ -37,5 +35,11 @@
     <!--  INSERT statements for reference data         -->
     <!-- ============================================= -->
     <!-- <include file="data/your-data-file.xml" relativeToChangelogFile="true"/> -->
+    <include file="data/lesson-data-V001.xml" relativeToChangelogFile="true"/>
+    <include file="data/chapter-data-V001.xml" relativeToChangelogFile="true"/>
+    <include file="data/task-data-V001.xml" relativeToChangelogFile="true"/>
 
+    <include file="data/user-data-V001.xml" relativeToChangelogFile="true"/>
+    <include file="data/progress-data-V001.xml" relativeToChangelogFile="true"/>
+    <include file="data/project-data-V001.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

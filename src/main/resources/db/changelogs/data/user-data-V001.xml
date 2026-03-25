@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="004-insert-user-data-v001-refined" author="Hromov">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists schemaName="dbo" tableName="user"/>
+                <columnExists schemaName="dbo" tableName="user" columnName="user_id"/>
+                <columnExists schemaName="dbo" tableName="user" columnName="nickname"/>
+                <columnExists schemaName="dbo" tableName="user" columnName="name"/>
+                <columnExists schemaName="dbo" tableName="user" columnName="surname"/>
+                <columnExists schemaName="dbo" tableName="user" columnName="email"/>
+                <columnExists schemaName="dbo" tableName="user" columnName="password_hash"/>
+                <columnExists schemaName="dbo" tableName="user" columnName="registration_date"/>
+            </and>
+        </preConditions>
+
+        <sql>
+            INSERT INTO dbo.[user] (nickname, name, surname, email, password_hash) VALUES
+                ('super_corg', 'Ivan', 'Hromov', 'ivan.hromov@nure.ua', '$2a$12$R9h/lSAbvvZAs67BRUM76uYtDfAgzO.6v.hY.K/6vK6V9F0vLqFmq'),
+                ('graph_master', 'Maryna', 'Cherevko', 'maryna.cherevko@nure.ua', '$2a$12$QwErTyUiOpAsDfGhJkLlZzXcVbNnMm1234567890AzByCxDwEvFu'),
+                ('coder_007', 'Mykyta', 'Shvets', 'mykyta.shvets@nure.ua', '$2a$12$KixSscS8D6Uv3p3vW4.2fO.hY.K/6vK6V9F0vLqFmqR9h/lSAbvvZ'),
+                ('dev_guru', 'Sofiia', 'Khapal', 'sofiia.khapal@nure.ua', '$2a$12$L7mXp9Q2wE4r5T6y7U8i9o0P1a2S3d4F5g6H7j8K9l0M1n2B3v4C5'),
+                ('cyber_user', 'Darya', 'Kravets', 'kravets.d@nure.ua', '$2a$12$Z1x2C3v4B5n6M7m8L9k0J9h8G7f6D5s4A3p2O1i0U9y8T7r6E5w4'),
+                ('coder_01', 'Oksana', 'Panchenko', 'panchenko.o@nure.ua', '$2a$12$P0o9I8u7Y6t5R4e3W2q1A1s2D3f4G5h6J7k8L9z0X9c8V7b6N5m4'),
+                ('tech_lead', 'Viktor', 'Moroz', 'moroz.v@nure.ua', '$2a$12$M1n2B3v4C5x6Z7l8K9j0H1g2F3d4S5a6P7o8I9u0Y1t2R3e4W5q6'),
+                ('db_admin', 'Iryna', 'Shevchenko', 'shevchenko.i@nure.ua', '$2a$12$B3v4C5x6Z7m8L9k0J1h2G3f4D5s6A7p8O9i0U1y2T3r4E5w6Q7z8'),
+                ('frontend_cat', 'Max', 'Klymenko', 'klymenko.m@nure.ua', '$2a$12$X6z7L8k9J0h1G2f3D4s5A6p7O8i9U0y1T2r3E4w5Q6z7X8c9V0b1'),
+                ('backend_dog', 'Serhiy', 'Tkachenko', 'tkachenko.s@nure.ua', '$2a$12$V0b1N2m3M4l5K6j7H8g9G0f1D2s3A4p5O6i7U8y9T0r1E2w3Q4z5'),
+                ('qa_tester', 'Olena', 'Lytvyn', 'lytvyn.o@nure.ua', '$2a$12$N2m3M4l5K6j7H8g9G0f1D2s3A4p5O6i7U8y9T0r1E2w3Q4z5S6x7'),
+                ('pm_manager', 'Dmytro', 'Rudenko', 'rudenko.d@nure.ua', '$2a$12$K6j7H8g9G0f1D2s3A4p5O6i7U8y9T0r1E2w3Q4z5S6x7D8c9F0v1'),
+                ('analyst_pro', 'Svitlana', 'Melnyk', 'melnyk.s@nure.ua', '$2a$12$G0f1D2s3A4p5O6i7U8y9T0r1E2w3Q4z5S6x7D8c9F0v1G2h3J4k5'),
+                ('security_pro', 'Artem', 'Boyko', 'boyko.a@nure.ua', '$2a$12$D2s3A4p5O6i7U8y9T0r1E2w3Q4z5S6x7D8c9F0v1G2h3J4k5L6m7'),
+                ('student_nure', 'Yana', 'Kovalenko', 'kovalenko.y@nure.ua', '$2a$12$A4p5O6i7U8y9T0r1E2w3Q4z5S6x7D8c9F0v1G2h3J4k5L6m7N8b9');
+        </sql>
+
+        <rollback>
+            <sql>
+                DELETE FROM dbo.[user]
+                WHERE nickname IN (
+                'super_corg', 'graph_master', 'coder_007', 'dev_guru', 'cyber_user',
+                'coder_01', 'tech_lead', 'db_admin', 'frontend_cat', 'backend_dog',
+                'qa_tester', 'pm_manager', 'analyst_pro', 'security_pro', 'student_nure'
+                );
+            </sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
