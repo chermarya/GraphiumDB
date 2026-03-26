@@ -34,6 +34,8 @@
     <include file="changes/edges-change-graph_id-V002.xml" relativeToChangelogFile="true"/>
     <include file="changes/nodes-change-degree-V002.xml" relativeToChangelogFile="true"/>
     <include file="changes/edges-constraints-V001.xml" relativeToChangelogFile="true"/>
+    <include file="changes/lesson-change-V001.xml" relativeToChangelogFile="true"/>
+    <include file="changes/progress-change-V001.xml" relativeToChangelogFile="true"/>
 
     <include file="triggers/trg_edges_fill_graph_id.xml" relativeToChangelogFile="true"/>
     <include file="triggers/trg-full-graph-delete-V001.xml" relativeToChangelogFile="true"/>
