@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="015-insert-graph-data-v001" author="cherevko">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists schemaName="dbo" tableName="graph"/>
+                <tableExists schemaName="dbo" tableName="projects"/>
+                <columnExists schemaName="dbo" tableName="projects" columnName="project_id"/>
+                <columnExists schemaName="dbo" tableName="graph" columnName="title"/>
+                <columnExists schemaName="dbo" tableName="graph" columnName="description"/>
+            </and>
+        </preConditions>
+
+        <sql>
+            WITH Numbers AS (
+                SELECT 1 AS n
+                UNION ALL
+                SELECT n + 1 FROM Numbers WHERE n &lt; 30000
+            )
+            INSERT INTO dbo.graph (title, description, project_id)
+            SELECT
+                CONCAT(N'Граф №', n),
+                CONCAT(N'Автоматично згенерований граф номер ', n),
+                ((n - 1) % 15) + 1
+            FROM Numbers
+            OPTION (MAXRECURSION 30000);
+        </sql>
+
+        <rollback>
+            <sql>
+                DELETE FROM dbo.graph
+                WHERE title IN (
+                'Базовий цикл', 'Повний граф K5', 'Дерево викликів', 'Граф залежностей',
+                'Топологія мережі НУРЕ', 'Карта маршрутизації', 'Динамічна мапа',
+                'Лабіринт алгоритму', 'Ігровий світ', 'Зв''язки гравців',
+                'Розподілена мережа', 'Транзакційний граф', 'Аналітичний дашборд',
+                'Навчальна структура', 'Семантичне дерево', 'Павутина посилань',
+                'Розумна оселя', 'Логістика замовлень', 'Транспортна мережа', 'Нейронна мережа'
+                );
+            </sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="013-insert-types-data-v001" author="cherevko">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists schemaName="dbo" tableName="Nodes"/>
+                <tableExists schemaName="dbo" tableName="graph"/>
+                <columnExists schemaName="dbo" tableName="Nodes" columnName="graph_id"/>
+                <columnExists schemaName="dbo" tableName="Nodes" columnName="name"/>
+                <columnExists schemaName="dbo" tableName="Nodes" columnName="pos_x"/>
+                <columnExists schemaName="dbo" tableName="Nodes" columnName="pos_y"/>
+                <columnExists schemaName="dbo" tableName="Nodes" columnName="color"/>
+            </and>
+        </preConditions>
+
+        <sql>
+            WITH Graphs AS (
+                SELECT graph_id
+                FROM dbo.graph
+            ),
+                 NodeNumbers AS (
+                     SELECT 1 AS n
+                     UNION ALL
+                     SELECT n + 1 FROM NodeNumbers WHERE n &lt; 5
+                )
+            INSERT INTO dbo.Nodes (graph_id, name, pos_x, pos_y, color)
+                    SELECT
+                        g.graph_id,
+                        CONCAT(N'Node_', g.graph_id, '_', n),
+                        CAST((g.graph_id * 10 + n * 5) AS FLOAT),
+                        CAST((g.graph_id * 5 + n * 10) AS FLOAT),
+                        CASE n
+                            WHEN 1 THEN '#FF0000'
+                            WHEN 2 THEN '#00FF00'
+                            ELSE '#0000FF'
+                            END
+                    FROM Graphs g
+                             CROSS JOIN NodeNumbers
+                        OPTION (MAXRECURSION 10);
+        </sql>
+
+        <rollback>
+            <sql>
+                DELETE FROM dbo.Nodes WHERE name IN (
+                'Root_Node', 'Child_A', 'Child_B', 'Vertex_1', 'Vertex_2', 'Decision_Root',
+                'Module_Core', 'Module_Auth', 'Router_Main', 'Gateway_In', 'Street_Intersection',
+                'Entrance_Gate', 'Player_Spawn', 'User_Profile_A', 'User_Profile_B',
+                'Cloud_Bucket', 'Wallet_Source', 'Wallet_Target', 'Metric_CPU', 'Lab_Task_1',
+                'Concept_Node', 'URL_Root', 'Sensor_Temp', 'Warehouse_A', 'Bus_Stop_Centre', 'Neuron_Main'
+                );
+            </sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="014-insert-types-data-v001" author="cherevko">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists schemaName="dbo" tableName="Edges"/>
+                <tableExists schemaName="dbo" tableName="Nodes"/>
+                <columnExists schemaName="dbo" tableName="Edges" columnName="source_node_id"/>
+                <columnExists schemaName="dbo" tableName="Edges" columnName="target_node_id"/>
+                <columnExists schemaName="dbo" tableName="Edges" columnName="weight"/>
+                <columnExists schemaName="dbo" tableName="Edges" columnName="is_directed"/>
+            </and>
+        </preConditions>
+
+        <sql>
+            WITH OrderedNodes AS (
+                SELECT
+                    node_id,
+                    graph_id,
+                    ROW_NUMBER() OVER (PARTITION BY graph_id ORDER BY node_id) AS rn
+                FROM dbo.Nodes
+            )
+            INSERT INTO dbo.Edges (source_node_id, target_node_id, weight, is_directed)
+            SELECT
+                n1.node_id,
+                n2.node_id,
+                CAST((n1.rn * 1.5) AS FLOAT),
+                1
+            FROM OrderedNodes n1
+                     JOIN OrderedNodes n2
+                          ON n1.graph_id = n2.graph_id
+                              AND (
+                                 (n1.rn = 1 AND n2.rn = 2) OR
+                                 (n1.rn = 2 AND n2.rn = 3) OR
+                                 (n1.rn = 3 AND n2.rn = 4) OR
+                                 (n1.rn = 4 AND n2.rn = 5) OR
+                                 (n1.rn = 5 AND n2.rn = 1)
+                                 );
+        </sql>
+
+        <rollback>
+            <sql>
+                DELETE FROM dbo.Edges
+                WHERE (source_node_id BETWEEN 1 AND 26) OR (target_node_id BETWEEN 1 AND 26);
+            </sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

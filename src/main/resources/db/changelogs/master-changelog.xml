@@ -24,7 +24,6 @@
     <include file="init/012-create-edges-table.xml" relativeToChangelogFile="true"/>
 
 
-
     <!-- ============================================= -->
     <!--  CHANGES: Schema modifications after init     -->
     <!--  ALTER TABLE, ADD COLUMN, RENAME, etc.        -->
@@ -52,5 +51,7 @@
     <include file="data/nodes-data-V001.xml" relativeToChangelogFile="true"/>
     <include file="data/edges-data-V001.xml" relativeToChangelogFile="true"/>
 
-
+    <include file="data/graph-data-V002.xml" relativeToChangelogFile="true"/>
+    <include file="data/nodes-data-V002.xml" relativeToChangelogFile="true"/>
+    <include file="data/edges-data-V002.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
