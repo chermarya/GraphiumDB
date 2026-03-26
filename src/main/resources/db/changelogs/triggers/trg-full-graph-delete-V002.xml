@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="021-update-trigger-full-graph-delete" author="cherevko" runOnChange="true">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists schemaName="dbo" tableName="graph"/>
+                <tableExists schemaName="dbo" tableName="graph_type"/>
+                <tableExists schemaName="dbo" tableName="Edges"/>
+                <tableExists schemaName="dbo" tableName="Nodes"/>
+            </and>
+        </preConditions>
+
+        <sql dbms="mssql">
+            IF OBJECT_ID('dbo.trg_FullGraphDelete', 'TR') IS NOT NULL
+            DROP TRIGGER dbo.trg_FullGraphDelete;
+
+            EXEC('
+                CREATE TRIGGER dbo.trg_FullGraphDelete
+                    ON dbo.graph
+                    INSTEAD OF DELETE
+                AS
+                BEGIN
+
+                    DELETE FROM dbo.graph_type
+                    WHERE graph_id IN (SELECT graph_id FROM deleted);
+
+                    DELETE e
+                    FROM dbo.Edges e
+                    INNER JOIN dbo.Nodes n ON e.source_node_id = n.node_id OR e.target_node_id = n.node_id
+                    WHERE n.graph_id IN (SELECT graph_id FROM deleted);
+
+                    DELETE FROM dbo.Nodes
+                    WHERE graph_id IN (SELECT graph_id FROM deleted);
+
+                    DELETE FROM dbo.graph
+                    WHERE graph_id IN (SELECT graph_id FROM deleted);
+
+                    UPDATE dbo.tables
+                    SET last_update_at = SYSUTCDATETIME()
+                    WHERE name = ''graph'';
+                END
+            ');
+        </sql>
+
+        <rollback>
+            <sql dbms="mssql">
+                DROP TRIGGER IF EXISTS dbo.trg_FullGraphDelete;
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

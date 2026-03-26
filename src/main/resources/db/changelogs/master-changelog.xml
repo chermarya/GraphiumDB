@@ -36,7 +36,8 @@
     <include file="changes/edges-constraints-V001.xml" relativeToChangelogFile="true"/>
 
     <include file="triggers/trg_edges_fill_graph_id.xml" relativeToChangelogFile="true"/>
-    <include file="triggers/trg-full-graph-delete.xml" relativeToChangelogFile="true"/>
+    <include file="triggers/trg-full-graph-delete-V001.xml" relativeToChangelogFile="true"/>
+    <include file="triggers/trg-full-graph-delete-V002.xml" relativeToChangelogFile="true"/>
 
     <!-- ============================================= -->
     <!--  DATA: Seed data insertions                   -->
