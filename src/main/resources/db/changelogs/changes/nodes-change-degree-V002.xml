@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="004-add-degree-to-nodes" author="khapal">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists schemaName="dbo" tableName="Nodes"/>
+                <tableExists schemaName="dbo" tableName="Edges"/>
+                <not>
+                    <columnExists schemaName="dbo" tableName="Nodes" columnName="degree"/>
+                </not>
+            </and>
+        </preConditions>
+
+        <addColumn tableName="Nodes">
+            <column name="degree" type="INT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <sql>
+            UPDATE n
+            SET n.degree = (
+                SELECT COUNT(*)
+                FROM dbo.Edges e
+                WHERE e.source_node_id = n.node_id OR e.target_node_id = n.node_id
+            )
+                FROM dbo.Nodes n;
+
+            INSERT INTO dbo.tables (db_, name, type, author, version, service, description, column_count, created_at)
+            VALUES ('liquibase_lab', 'nodes table', 'ALTER_TABLE', 'cherevko', 2, 'graph_service',
+                    'Added degree field to store node connection count.',
+                    (SELECT COUNT(*) FROM sys.columns WHERE object_id = OBJECT_ID('nodes table')),
+                    SYSUTCDATETIME());
+        </sql>
+
+        <rollback>
+            <dropColumn tableName="Nodes" columnName="degree"/>
+
+            <sql>
+                DELETE FROM dbo.tables WHERE name = 'nodes table' AND version = 2;
+
+                UPDATE dbo.tables
+                SET column_count = (SELECT COUNT(*) FROM sys.columns WHERE object_id = OBJECT_ID('Nodes')),
+                last_update_at = SYSUTCDATETIME()
+                WHERE name = 'Nodes' AND version = 1;
+            </sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

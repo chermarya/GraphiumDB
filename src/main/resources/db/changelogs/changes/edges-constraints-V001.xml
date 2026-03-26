@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="020-update-edges-fk-cascade" author="khapal">
+        <preConditions onFail="MARK_RAN">
+            <tableExists schemaName="dbo" tableName="Edges"/>
+        </preConditions>
+
+        <sql dbms="mssql" endDelimiter="\nGO">
+            IF EXISTS (SELECT * FROM sys.foreign_keys WHERE name = 'fk_edges_source_node')
+            ALTER TABLE dbo.Edges DROP CONSTRAINT fk_edges_source_node;
+
+            IF EXISTS (SELECT * FROM sys.foreign_keys WHERE name = 'fk_edges_target_node')
+            ALTER TABLE dbo.Edges DROP CONSTRAINT fk_edges_target_node;
+
+            ALTER TABLE dbo.Edges ADD CONSTRAINT fk_edges_source_node_cascade
+                FOREIGN KEY (source_node_id) REFERENCES dbo.Nodes(node_id) ON DELETE CASCADE;
+
+            ALTER TABLE dbo.Edges ADD CONSTRAINT fk_edges_target_node_no_action
+                FOREIGN KEY (target_node_id) REFERENCES dbo.Nodes(node_id) ON DELETE NO ACTION;
+        </sql>
+
+        <rollback>
+            <sql dbms="mssql">
+                ALTER TABLE dbo.Edges DROP CONSTRAINT fk_edges_source_node_cascade;
+                ALTER TABLE dbo.Edges DROP CONSTRAINT fk_edges_target_node_no_action;
+
+                ALTER TABLE dbo.Edges ADD CONSTRAINT fk_edges_source_node
+                FOREIGN KEY (source_node_id) REFERENCES dbo.Nodes(node_id);
+
+                ALTER TABLE dbo.Edges ADD CONSTRAINT fk_edges_target_node
+                FOREIGN KEY (target_node_id) REFERENCES dbo.Nodes(node_id);
+            </sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

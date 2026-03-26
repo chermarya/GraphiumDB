@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="022-create-trigger-node-delete" author="cherevko" runOnChange="true">
+        <preConditions onFail="HALT">
+            <tableExists schemaName="dbo" tableName="Nodes"/>
+            <tableExists schemaName="dbo" tableName="Edges"/>
+        </preConditions>
+
+        <sql dbms="mssql">
+            IF OBJECT_ID('dbo.trg_NodesDeleteCleanup', 'TR') IS NOT NULL
+            DROP TRIGGER dbo.trg_NodesDeleteCleanup;
+
+            EXEC('
+                CREATE TRIGGER dbo.trg_NodesDeleteCleanup
+                ON dbo.Nodes
+                INSTEAD OF DELETE
+                AS
+                BEGIN
+                    DELETE FROM dbo.Edges
+                    WHERE target_node_id IN (SELECT node_id FROM deleted);
+
+                    DELETE FROM dbo.Edges
+                    WHERE source_node_id IN (SELECT node_id FROM deleted);
+
+                    DELETE FROM dbo.Nodes
+                    WHERE node_id IN (SELECT node_id FROM deleted);
+
+                    UPDATE g
+                    SET g.nodes_count = (SELECT COUNT(*) FROM dbo.Nodes n WHERE n.graph_id = g.graph_id)
+                    FROM dbo.graph g
+                    WHERE g.graph_id IN (SELECT graph_id FROM deleted);
+                END
+            ');
+        </sql>
+
+        <rollback>
+            <sql dbms="mssql">
+                DROP TRIGGER IF EXISTS dbo.trg_NodesDeleteCleanup;
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
