@@ -20,6 +20,8 @@
     <include file="init/008-create-graph-table.xml" relativeToChangelogFile="true"/>
     <include file="init/009-create-types-table.xml" relativeToChangelogFile="true"/>
     <include file="init/010-create-graph_type-table.xml" relativeToChangelogFile="true"/>
+    <include file="init/011-create-nodes-table.xml" relativeToChangelogFile="true"/>
+    <include file="init/012-create-edges-table.xml" relativeToChangelogFile="true"/>
 
 
 
