@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="022-add-nodes-counter-triggers" author="khapal" runOnChange="true">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists schemaName="dbo" tableName="graph"/>
+                <tableExists schemaName="dbo" tableName="Nodes"/>
+                <tableExists schemaName="dbo" tableName="Edges"/>
+            </and>
+        </preConditions>
+
+        <sql dbms="mssql">
+            IF OBJECT_ID('dbo.trg_UpdateEdgesCount', 'TR') IS NOT NULL DROP TRIGGER dbo.trg_UpdateEdgesCount;
+            EXEC('
+                CREATE TRIGGER dbo.trg_UpdateEdgesCount
+                ON dbo.Edges
+                AFTER INSERT, DELETE
+                AS
+                BEGIN
+                    SET NOCOUNT ON;
+                    IF EXISTS (SELECT * FROM inserted)
+                        UPDATE g SET g.edges_count = g.edges_count + count_table.cnt
+                        FROM dbo.graph g
+                        JOIN (SELECT graph_id, COUNT(*) as cnt FROM inserted GROUP BY graph_id) count_table
+                        ON g.graph_id = count_table.graph_id;
+
+                    IF EXISTS (SELECT * FROM deleted)
+                        UPDATE g SET g.edges_count = g.edges_count - count_table.cnt
+                        FROM dbo.graph g
+                        JOIN (SELECT graph_id, COUNT(*) as cnt FROM deleted GROUP BY graph_id) count_table
+                        ON g.graph_id = count_table.graph_id;
+                END
+            ');
+        </sql>
+
+        <rollback>
+            <sql dbms="mssql">
+                DROP TRIGGER IF EXISTS dbo.trg_UpdateEdgesCount;
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
