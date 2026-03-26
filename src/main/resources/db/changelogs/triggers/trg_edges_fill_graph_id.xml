@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="019-create-trigger-edges-fill-id" author="cherevko" runOnChange="true">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists schemaName="dbo" tableName="Edges"/>
+                <tableExists schemaName="dbo" tableName="Nodes"/>
+                <columnExists schemaName="dbo" tableName="Edges" columnName="graph_id"/>
+            </and>
+        </preConditions>
+
+        <sql dbms="mssql" endDelimiter="\nGO">
+            CREATE TRIGGER dbo.trg_edges_fill_graph_id
+                ON dbo.Edges
+                INSTEAD OF INSERT
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+
+            INSERT INTO dbo.Edges (source_node_id, target_node_id, weight, is_directed, graph_id)
+            SELECT
+                i.source_node_id,
+                i.target_node_id,
+                i.weight,
+                i.is_directed,
+                n.graph_id
+            FROM inserted i
+                     JOIN dbo.Nodes n ON i.source_node_id = n.node_id;
+            END
+        </sql>
+
+        <rollback>
+            <sql dbms="mssql">
+                DROP TRIGGER IF EXISTS dbo.trg_edges_fill_graph_id;
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
