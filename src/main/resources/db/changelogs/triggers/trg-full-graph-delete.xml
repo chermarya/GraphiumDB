@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="021-create-trigger-full-graph-delete" author="cherevko" runOnChange="true">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists schemaName="dbo" tableName="graph"/>
+                <tableExists schemaName="dbo" tableName="Nodes"/>
+                <tableExists schemaName="dbo" tableName="Edges"/>
+            </and>
+        </preConditions>
+
+        <sql dbms="mssql" endDelimiter="\nGO">
+            CREATE TRIGGER dbo.trg_FullGraphDelete
+                ON dbo.graph
+                INSTEAD OF DELETE
+            AS
+            BEGIN
+
+            DELETE FROM dbo.Edges
+            WHERE graph_id IN (SELECT graph_id FROM deleted);
+
+            DELETE FROM dbo.Nodes
+            WHERE graph_id IN (SELECT graph_id FROM deleted);
+
+            DELETE FROM dbo.graph_type
+            WHERE graph_id IN (SELECT graph_id FROM deleted);
+
+            DELETE FROM dbo.graph
+            WHERE graph_id IN (SELECT graph_id FROM deleted);
+
+            UPDATE dbo.tables
+            SET last_update_at = SYSUTCDATETIME()
+            WHERE name = 'graph';
+            END;
+        </sql>
+
+        <rollback>
+            <sql dbms="mssql">
+                DROP TRIGGER IF EXISTS dbo.trg_FullGraphDelete;
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

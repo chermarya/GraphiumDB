@@ -33,8 +33,10 @@
     <include file="changes/graph-change-edges_count-V003.xml" relativeToChangelogFile="true"/>
     <include file="changes/edges-change-graph_id-V002.xml" relativeToChangelogFile="true"/>
     <include file="changes/nodes-change-degree-V002.xml" relativeToChangelogFile="true"/>
+    <include file="changes/edges-constraints-V001.xml" relativeToChangelogFile="true"/>
 
     <include file="triggers/trg_edges_fill_graph_id.xml" relativeToChangelogFile="true"/>
+    <include file="triggers/trg-full-graph-delete.xml" relativeToChangelogFile="true"/>
 
     <!-- ============================================= -->
     <!--  DATA: Seed data insertions                   -->
