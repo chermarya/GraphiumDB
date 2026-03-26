@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="002-add-edges-count-to-graph" author="cherevko">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists schemaName="dbo" tableName="graph"/>
+                <not>
+                    <columnExists schemaName="dbo" tableName="graph" columnName="edges_count"/>
+                </not>
+            </and>
+        </preConditions>
+
+        <addColumn tableName="graph">
+            <column name="edges_count" type="INT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <sql>
+            UPDATE g
+            SET g.edges_count = (
+                SELECT COUNT(e.edge_id)
+                FROM dbo.Edges e
+                         JOIN dbo.Nodes n ON e.source_node_id = n.node_id
+                WHERE n.graph_id = g.graph_id
+            )
+                FROM dbo.graph g;
+
+            INSERT INTO dbo.tables (db_, name, type, author, version, service, description, column_count, created_at)
+            VALUES ('liquibase_lab', 'graph', 'ALTER_TABLE', 'cherevko', 3, 'graph_service',
+                    'Added edges_count field for denormalization.',
+                    (SELECT COUNT(*) FROM sys.columns WHERE object_id = OBJECT_ID('graph')),
+                    SYSUTCDATETIME());
+        </sql>
+
+        <rollback>
+            <dropColumn tableName="graph" columnName="edges_count"/>
+
+            <sql>
+                DELETE FROM dbo.tables WHERE name = 'graph' AND version = 3;
+
+                UPDATE dbo.tables
+                SET column_count = (SELECT COUNT(*) FROM sys.columns WHERE object_id = OBJECT_ID('graph')),
+                last_update_at = SYSUTCDATETIME()
+                WHERE name = 'graph' AND version = 1;
+            </sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
