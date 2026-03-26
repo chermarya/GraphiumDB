@@ -29,7 +29,10 @@
     <!--  ALTER TABLE, ADD COLUMN, RENAME, etc.        -->
     <!-- ============================================= -->
     <!-- <include file="changes/your-change-file.xml" relativeToChangelogFile="true"/> -->
-
+    <include file="changes/graph-change-nodes_count-V002.xml" relativeToChangelogFile="true"/>
+    <include file="changes/graph-change-edges_count-V003.xml" relativeToChangelogFile="true"/>
+    <include file="changes/edges-change-graph_id-V002.xml" relativeToChangelogFile="true"/>
+    <include file="changes/nodes-change-degree-V002.xml.xml" relativeToChangelogFile="true"/>
 
     <!-- ============================================= -->
     <!--  DATA: Seed data insertions                   -->
