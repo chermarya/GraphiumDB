@@ -7,7 +7,6 @@
 
     <changeSet id="009-create-edges-table" author="khapalsofiia">
         <createTable tableName="edges">
-            <column name="edge_id" type="BIGINT">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="pk_edges"/>
             </column>
 

@@ -7,7 +7,6 @@
 
     <changeSet id="008-create-nodes-table" author="Khapal">
         <createTable tableName="nodes">
-            <column name="node_id" type="BIGINT">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="pk_nodes"/>
             </column>
 

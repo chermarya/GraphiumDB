@@ -42,4 +42,13 @@
     <include file="data/user-data-V001.xml" relativeToChangelogFile="true"/>
     <include file="data/progress-data-V001.xml" relativeToChangelogFile="true"/>
     <include file="data/project-data-V001.xml" relativeToChangelogFile="true"/>
+
+    <include file="data/graph-data-V001.xml" relativeToChangelogFile="true"/>
+    <include file="data/types-data-V001.xml" relativeToChangelogFile="true"/>
+    <include file="data/graph_type-data-V001.xml" relativeToChangelogFile="true"/>
+
+    <include file="data/nodes-data-V001.xml" relativeToChangelogFile="true"/>
+    <include file="data/edges-data-V001.xml" relativeToChangelogFile="true"/>
+
+
 </databaseChangeLog>
