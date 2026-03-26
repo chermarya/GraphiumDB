@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="001-drop-lesson-table" author="shvets">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists schemaName="dbo" tableName="lesson"/>
+                <tableExists schemaName="dbo" tableName="chapter"/>
+                <columnExists schemaName="dbo" tableName="chapter" columnName="lesson_id"/>
+            </and>
+        </preConditions>
+
+        <dropForeignKeyConstraint
+                baseTableName="chapter"
+                constraintName="fk_chapter_lesson"/>
+
+        <dropTable tableName="lesson"/>
+
+        <rollback>
+            <createTable tableName="lesson">
+                <column name="lesson_id" type="BIGINT" autoIncrement="true">
+                    <constraints primaryKey="true" nullable="false"/>
+                </column>
+
+                <column name="title" type="VARCHAR(255)">
+                    <constraints nullable="false"/>
+                </column>
+
+                <column name="description" type="VARCHAR(1000)"/>
+
+                <column name="video_url" type="VARCHAR(500)"/>
+            </createTable>
+
+            <addForeignKeyConstraint
+                    baseTableName="chapter"
+                    baseColumnNames="lesson_id"
+                    referencedTableName="lesson"
+                    referencedColumnNames="lesson_id"
+                    constraintName="fk_chapter_lesson"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

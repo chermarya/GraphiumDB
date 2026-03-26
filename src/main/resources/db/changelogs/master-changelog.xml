@@ -37,6 +37,7 @@
 
     <include file="changes/lesson-change-V001.xml" relativeToChangelogFile="true"/>
     <include file="changes/progress-change-V001.xml" relativeToChangelogFile="true"/>
+    <include file="changes/lesson-change-V002.xml" relativeToChangelogFile="true"/>
 
     <include file="changes/ user-change-count.xml" relativeToChangelogFile="true"/>
     <include file="changes/projects-change-count.xml" relativeToChangelogFile="true"/>
