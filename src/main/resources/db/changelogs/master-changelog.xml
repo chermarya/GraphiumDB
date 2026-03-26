@@ -20,6 +20,8 @@
     <include file="init/008-create-graph-table.xml" relativeToChangelogFile="true"/>
     <include file="init/009-create-types-table.xml" relativeToChangelogFile="true"/>
     <include file="init/010-create-graph_type-table.xml" relativeToChangelogFile="true"/>
+    <include file="init/011-create-nodes-table.xml" relativeToChangelogFile="true"/>
+    <include file="init/012-create-edges-table.xml" relativeToChangelogFile="true"/>
 
 
 
@@ -42,4 +44,13 @@
     <include file="data/user-data-V001.xml" relativeToChangelogFile="true"/>
     <include file="data/progress-data-V001.xml" relativeToChangelogFile="true"/>
     <include file="data/project-data-V001.xml" relativeToChangelogFile="true"/>
+
+    <include file="data/graph-data-V001.xml" relativeToChangelogFile="true"/>
+    <include file="data/types-data-V001.xml" relativeToChangelogFile="true"/>
+    <include file="data/graph_type-data-V001.xml" relativeToChangelogFile="true"/>
+
+    <include file="data/nodes-data-V001.xml" relativeToChangelogFile="true"/>
+    <include file="data/edges-data-V001.xml" relativeToChangelogFile="true"/>
+
+
 </databaseChangeLog>

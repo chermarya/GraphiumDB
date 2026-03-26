@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="010-insert-types-data-v001" author="cherevko">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists schemaName="dbo" tableName="Nodes"/>
+                <tableExists schemaName="dbo" tableName="graph"/>
+                <columnExists schemaName="dbo" tableName="Nodes" columnName="graph_id"/>
+                <columnExists schemaName="dbo" tableName="Nodes" columnName="name"/>
+                <columnExists schemaName="dbo" tableName="Nodes" columnName="pos_x"/>
+                <columnExists schemaName="dbo" tableName="Nodes" columnName="pos_y"/>
+                <columnExists schemaName="dbo" tableName="Nodes" columnName="color"/>
+            </and>
+        </preConditions>
+
+        <sql>
+            INSERT INTO dbo.Nodes (graph_id, name, pos_x, pos_y, color) VALUES
+                (1, 'Root_Node', 0.0, 0.0, '#FF0000'),
+                (1, 'Child_A', 10.5, 20.0, '#00FF00'),
+                (1, 'Child_B', -10.5, 20.0, '#0000FF'),
+                (2, 'Vertex_1', 100.0, 100.0, '#FFFFFF'),
+                (2, 'Vertex_2', 200.0, 200.0, '#000000'),
+                (3, 'Decision_Root', 50.0, 50.0, '#FFA500'),
+                (4, 'Module_Core', 0.0, 500.0, '#800080'),
+                (4, 'Module_Auth', 50.0, 550.0, '#800080'),
+                (5, 'Router_Main', 12.0, 14.0, '#FFFF00'),
+                (6, 'Gateway_In', 88.0, 99.0, '#C0C0C0'),
+                (7, 'Street_Intersection', 34.5, 67.8, '#FFC0CB'),
+                (8, 'Entrance_Gate', 1.0, 1.0, '#00FFFF'),
+                (9, 'Player_Spawn', 5.0, 5.0, '#F0E68C'),
+                (10, 'User_Profile_A', 10.0, 10.0, '#ADD8E6'),
+                (10, 'User_Profile_B', 25.0, 30.0, '#ADD8E6'),
+                (11, 'Cloud_Bucket', 45.0, 90.0, '#90EE90'),
+                (12, 'Wallet_Source', 150.0, 300.0, '#FF4500'),
+                (12, 'Wallet_Target', 350.0, 300.0, '#FF4500'),
+                (13, 'Metric_CPU', 200.0, 50.0, '#DEB887'),
+                (14, 'Lab_Task_1', 10.0, 20.0, '#5F9EA0'),
+                (15, 'Concept_Node', 0.0, 0.0, '#7FFF00'),
+                (16, 'URL_Root', 100.0, 500.0, '#D2691E'),
+                (17, 'Sensor_Temp', 60.0, 60.0, '#FF7F50'),
+                (18, 'Warehouse_A', 1000.0, 2000.0, '#6495ED'),
+                (19, 'Bus_Stop_Centre', 500.0, 500.0, '#DC143C'),
+                (20, 'Neuron_Main', 5.5, 8.2, '#00008B');
+        </sql>
+
+        <rollback>
+            <sql>
+                DELETE FROM dbo.Nodes WHERE name IN (
+                'Root_Node', 'Child_A', 'Child_B', 'Vertex_1', 'Vertex_2', 'Decision_Root',
+                'Module_Core', 'Module_Auth', 'Router_Main', 'Gateway_In', 'Street_Intersection',
+                'Entrance_Gate', 'Player_Spawn', 'User_Profile_A', 'User_Profile_B',
+                'Cloud_Bucket', 'Wallet_Source', 'Wallet_Target', 'Metric_CPU', 'Lab_Task_1',
+                'Concept_Node', 'URL_Root', 'Sensor_Temp', 'Warehouse_A', 'Bus_Stop_Centre', 'Neuron_Main'
+                );
+            </sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="007-insert-types-data-v001" author="cherevko">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists schemaName="dbo" tableName="types"/>
+                <columnExists schemaName="dbo" tableName="types" columnName="title"/>
+                <columnExists schemaName="dbo" tableName="types" columnName="description"/>
+            </and>
+        </preConditions>
+
+        <sql>
+            INSERT INTO dbo.types (title, description) VALUES
+                ('Орієнтований', 'Граф, у якому кожне ребро має визначений напрямок від одного вузла до іншого.'),
+                ('Неорієнтований', 'Граф, у якому ребра не мають напрямку, що означає двосторонній зв''язок між вузлами.'),
+                ('Зважений', 'Граф, у якому кожному ребру присвоєно певне числове значення (вага), що може означати відстань або вартість.'),
+                ('Незважений', 'Граф, у якому всі ребра вважаються рівноцінними, а їхня вага не враховується при аналізі.'),
+                ('Зв''язний', 'Граф, у якому для будь-якої пари вузлів існує шлях, що їх з''єднує.'),
+                ('Циклічний', 'Граф, який містить хоча б один цикл — замкнений шлях, що починається і закінчується в одному вузлі.'),
+                ('Ациклічний', 'Граф, у якому відсутні будь-які цикли. Прикладом такого графа є дерево.');
+        </sql>
+
+        <rollback>
+            <sql>
+                DELETE FROM dbo.types
+                WHERE title IN (
+                'Орієнтований', 'Неорієнтований', 'Зважений',
+                'Незважений', 'Зв''язний', 'Циклічний', 'Ациклічний'
+                );
+            </sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
