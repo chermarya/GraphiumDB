@@ -33,9 +33,9 @@
                 FROM dbo.Nodes n;
 
             INSERT INTO dbo.tables (db_, name, type, author, version, service, description, column_count, created_at)
-            VALUES ('liquibase_lab', 'Nodes', 'ALTER_TABLE', 'cherevko', 2, 'graph_service',
+            VALUES ('liquibase_lab', 'nodes table', 'ALTER_TABLE', 'cherevko', 2, 'graph_service',
                     'Added degree field to store node connection count.',
-                    (SELECT COUNT(*) FROM sys.columns WHERE object_id = OBJECT_ID('Nodes')),
+                    (SELECT COUNT(*) FROM sys.columns WHERE object_id = OBJECT_ID('nodes table')),
                     SYSUTCDATETIME());
         </sql>
 
@@ -43,7 +43,7 @@
             <dropColumn tableName="Nodes" columnName="degree"/>
 
             <sql>
-                DELETE FROM dbo.tables WHERE name = 'Nodes' AND version = 2;
+                DELETE FROM dbo.tables WHERE name = 'nodes table' AND version = 2;
 
                 UPDATE dbo.tables
                 SET column_count = (SELECT COUNT(*) FROM sys.columns WHERE object_id = OBJECT_ID('Nodes')),

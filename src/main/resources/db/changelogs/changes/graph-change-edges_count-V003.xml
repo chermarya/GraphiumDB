@@ -33,9 +33,9 @@
                 FROM dbo.graph g;
 
             INSERT INTO dbo.tables (db_, name, type, author, version, service, description, column_count, created_at)
-            VALUES ('liquibase_lab', 'graph', 'ALTER_TABLE', 'cherevko', 3, 'graph_service',
+            VALUES ('liquibase_lab', 'graph_table', 'ALTER_TABLE', 'cherevko', 3, 'graph_service',
                     'Added edges_count field for denormalization.',
-                    (SELECT COUNT(*) FROM sys.columns WHERE object_id = OBJECT_ID('graph')),
+                    (SELECT COUNT(*) FROM sys.columns WHERE object_id = OBJECT_ID('graph_table')),
                     SYSUTCDATETIME());
         </sql>
 
@@ -43,7 +43,7 @@
             <dropColumn tableName="graph" columnName="edges_count"/>
 
             <sql>
-                DELETE FROM dbo.tables WHERE name = 'graph' AND version = 3;
+                DELETE FROM dbo.tables WHERE name = 'graph_table' AND version = 3;
 
                 UPDATE dbo.tables
                 SET column_count = (SELECT COUNT(*) FROM sys.columns WHERE object_id = OBJECT_ID('graph')),

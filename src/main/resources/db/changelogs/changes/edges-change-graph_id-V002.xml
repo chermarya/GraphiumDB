@@ -35,9 +35,9 @@
             ALTER TABLE dbo.Edges ALTER COLUMN graph_id BIGINT NOT NULL;
 
             INSERT INTO dbo.tables (db_, name, type, author, version, service, description, column_count, created_at)
-            VALUES ('liquibase_lab', 'edges', 'ALTER_TABLE', 'cherevko', 2, 'graph_service',
+            VALUES ('liquibase_lab', 'edges table', 'ALTER_TABLE', 'cherevko', 2, 'graph_service',
                     'Added direct graph_id for query optimization.',
-                    (SELECT COUNT(*) FROM sys.columns WHERE object_id = OBJECT_ID('edges')),
+                    (SELECT COUNT(*) FROM sys.columns WHERE object_id = OBJECT_ID('edges table')),
                     SYSUTCDATETIME());
         </sql>
 
@@ -45,7 +45,7 @@
             <dropColumn tableName="edges" columnName="graph_id"/>
 
             <sql>
-                DELETE FROM dbo.tables WHERE name = 'edges' AND version = 2;
+                DELETE FROM dbo.tables WHERE name = 'edges table' AND version = 2;
 
                 UPDATE dbo.tables
                 SET column_count = (SELECT COUNT(*) FROM sys.columns WHERE object_id = OBJECT_ID('edges')),
