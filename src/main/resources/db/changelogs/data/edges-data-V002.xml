@@ -6,7 +6,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="014-insert-types-data-v001" author="cherevko">
+    <changeSet id="031-insert-types-data-v001" author="cherevko">
         <preConditions onFail="HALT">
             <and>
                 <tableExists schemaName="dbo" tableName="Edges"/>

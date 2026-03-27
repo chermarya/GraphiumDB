@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 
-    <changeSet id="008-create-nodes-table" author="Khapal">
+    <changeSet id="011-create-nodes-table" author="Khapal">
         <createTable tableName="nodes">
             <column name="node_id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="pk_nodes"/>

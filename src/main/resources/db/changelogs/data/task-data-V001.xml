@@ -6,7 +6,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
 
-    <changeSet id="001-insert-task-data-v001" author="shvets">
+    <changeSet id="015-insert-task-data-v001" author="shvets">
         <preConditions onFail="HALT">
             <and>
                 <tableExists schemaName="dbo" tableName="chapter"/>

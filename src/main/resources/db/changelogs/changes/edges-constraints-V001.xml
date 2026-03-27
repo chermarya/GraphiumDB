@@ -6,7 +6,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="020-update-edges-fk-cascade" author="khapal">
+    <changeSet id="028-update-edges-fk-cascade" author="khapal">
         <preConditions onFail="MARK_RAN">
             <tableExists schemaName="dbo" tableName="Edges"/>
         </preConditions>

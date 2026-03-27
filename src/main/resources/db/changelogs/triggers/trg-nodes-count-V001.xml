@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="022-add-edges-counter-triggers" author="khapal" runOnChange="true">
+    <changeSet id="035-add-edges-counter-triggers" author="khapal" runOnChange="true">
         <preConditions onFail="HALT">
             <and>
                 <tableExists schemaName="dbo" tableName="graph"/>
