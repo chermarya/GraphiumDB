@@ -6,7 +6,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
 
-    <changeSet id="001-add-video-url-to-lesson" author="shvets">
+    <changeSet id="037-add-video-url-to-lesson" author="shvets">
         <preConditions onFail="HALT">
             <tableExists schemaName="dbo" tableName="lesson"/>
         </preConditions>

@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="007-add-graph-count-to-projects" author="Hromov">
+    <changeSet id="040-add-graph-count-to-projects" author="Hromov">
         <addColumn tableName="projects">
             <column name="graph_count" type="INT" defaultValueNumeric="0">
                 <constraints nullable="false"/>

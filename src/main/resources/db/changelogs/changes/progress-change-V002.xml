@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="008-drop-progress-table" author="Hromov">
+    <changeSet id="042-drop-progress-table" author="Hromov">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="progress"/>
         </preConditions>
